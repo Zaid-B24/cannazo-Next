@@ -5,7 +5,7 @@ import CustomFormField from "./CustomFormField";
 import { FormFieldType, type PatientFormData } from "@/lib/types";
 import type { UseFormReturn } from "react-hook-form";
 import { useMemo } from "react";
-import { PRODUCTS } from "@/lib/products";
+import { getProductNames, PRODUCTS } from "@/lib/products";
 
 interface StepThreeProps {
   methods: UseFormReturn<PatientFormData>;
@@ -179,7 +179,7 @@ export default function StepThree({ methods }: StepThreeProps) {
             </div>
           </div>
 
-          {selectedProducts.length > 0 && (
+          {getProductNames.length > 0 && (
             <>
               <hr className="border-dashed border-gray-200" />
 

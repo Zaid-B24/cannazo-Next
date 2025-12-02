@@ -5,16 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CircleCheckBig, Loader2 } from "lucide-react";
 import { PatientFormValidation, type PatientFormData } from "@/lib/types";
-
 import { toast } from "sonner";
 import StepProducts from "./StepProducts";
-import { generatePDF } from "@/lib/pdf-generator";
-
 import { Button } from "../ui/button";
 import { Stepper } from "./Stepper";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+import { getProductNames } from "@/lib/products";
 
 export default function PatientForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -108,10 +106,46 @@ export default function PatientForm() {
       } else {
         setIsSubmitting(true);
         try {
-          await generatePDF(getValues());
-          toast.success(
-            "Your request has been submitted successfully. Our team will contact you shortly."
-          );
+          const rawData = getValues();
+          console.log("Sending data to backend...");
+          const finalPayload = {
+            ...rawData,
+            selectedProducts: getProductNames(rawData.selectedProducts),
+          };
+
+          const response = await fetch("/api/submit-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(finalPayload),
+          });
+
+          if (!response.ok) {
+            const errorResult = await response.json();
+            throw new Error(errorResult.error || "Submission failed");
+          }
+
+          // --- PDF DOWNLOAD LOGIC STARTS HERE ---
+
+          // 1. Convert response to a Blob (Binary file)
+          const blob = await response.blob();
+
+          // 2. Create a temporary URL for the Blob
+          const url = window.URL.createObjectURL(blob);
+
+          // 3. Create a hidden link and trigger the click
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Prescription-${rawData.name}.pdf`; // Custom filename
+          document.body.appendChild(a);
+          a.click();
+
+          // 4. Cleanup
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          // --- PDF DOWNLOAD LOGIC ENDS HERE ---
+
+          console.log("PDF Downloaded successfully");
           setIsSubmitting(false);
           setShowSuccess(true);
         } catch (error) {

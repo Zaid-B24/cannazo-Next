@@ -21,8 +21,6 @@ const simpleFade = {
   },
 };
 
-// ✅ FIX 1: Move ProductCard OUTSIDE the main component
-// ✅ FIX 2: Use memo() so cards don't re-render unless their specific data changes
 const ProductCard = memo(
   ({
     product,

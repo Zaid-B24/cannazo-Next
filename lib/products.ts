@@ -1,3 +1,17 @@
+// export type Dosage = {
+//   adults: {
+//     age18to50: {
+//       male: string;
+//       female: string;
+//     };
+//     above50: {
+//       male: string;
+//       female: string;
+//     };
+//   };
+//   children: string; 
+// };
+
 export type Product = {
   id: string;
   name: string;
@@ -5,6 +19,7 @@ export type Product = {
   category: string;
   image: string;
   tags: string[];
+  dose?:string;
 };
 
 
@@ -30,6 +45,7 @@ export const PRODUCTS: Product[] = [
       "Anti-inflammatory",
       "Anti-aging",
     ],
+    dose:"1-0-0"
   },
   {
     id: "2",
@@ -47,6 +63,7 @@ export const PRODUCTS: Product[] = [
       "Stress regulation",
       "Neuroprotective",
     ],
+    dose:"0-0-1",
   },
   {
     id: "3",
@@ -62,6 +79,7 @@ export const PRODUCTS: Product[] = [
       "Focus & productivity",
       "Mood stabilize",
     ],
+    dose:"1-0-0",
   },
   {
     id: "4",
@@ -77,6 +95,7 @@ export const PRODUCTS: Product[] = [
       "Appetite boost",
       "Muscle stiffness",
     ],
+    dose:"0-0-1",
   },
   {
     id: "5",
@@ -91,6 +110,7 @@ export const PRODUCTS: Product[] = [
       "Stress-induced insomnia",
       "Improved circadian rhythm",
     ],
+    dose:"0-0-1",
   },
   {
     id: "6",
@@ -109,6 +129,7 @@ export const PRODUCTS: Product[] = [
       "Multiple sclerosis",
       "Motor neuron disease",
     ],
+    dose:"0-0-1",
   },
   {
     id: "7",
@@ -126,6 +147,7 @@ export const PRODUCTS: Product[] = [
       "Relaxation",
       "Chronic pain",
     ],
+    dose:"0-0-1",
   },
 
   // --- EXTRACTS ---
@@ -147,6 +169,7 @@ export const PRODUCTS: Product[] = [
       "Better Sleep",
       "Chronic pain",
     ],
+    dose:"0-0-1",
   },
   {
     id: "9",
@@ -162,6 +185,7 @@ export const PRODUCTS: Product[] = [
       "Chronic pain",
       "Fibromyalgia",
     ],
+    dose:"0-0-1",
   },
   {
     id: "10",
@@ -177,7 +201,9 @@ export const PRODUCTS: Product[] = [
       "Airway inflammation reduction",
       "Cough & wheezing relief",
     ],
+    dose:"1-0-0",
   },
+
 
   // --- CAPSULES ---
   {
@@ -192,6 +218,7 @@ export const PRODUCTS: Product[] = [
       "Arthritis",
       "Sleep improvement",
     ],
+    dose:"1-0-0",
   },
 
   // --- TABLETS ---
@@ -209,6 +236,7 @@ export const PRODUCTS: Product[] = [
       "Spasm relief",
       "Ayurvedic Vata balancing",
     ],
+    dose:"1-0-1",
   },
 ];
 
@@ -226,3 +254,16 @@ PRODUCTS.forEach((product) => {
     }
   });
 });
+
+export function getProductNames(ids: string[]): string[] {
+  if (!ids || ids.length === 0) return [];
+  
+  return ids.map((id) => {
+    const product = PRODUCTS.find((p) => p.id === id);
+    return product ? product.name : `Unknown Product (${id})`;
+  });
+}
+
+export function getProductByName(name: string): Product | undefined {
+  return PRODUCTS.find((p) => p.name === name);
+}

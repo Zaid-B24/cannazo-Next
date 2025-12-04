@@ -163,7 +163,6 @@ export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
         {/* HEADER */}
         <View style={styles.headerContainer}>
           <View style={styles.clinicSection}>
-            <Text style={styles.clinicName}>HEALTH SOLUTION CLINIC</Text>
             <Text style={styles.subText}>
               NG Plaza, Building No 1, Mira Road
             </Text>

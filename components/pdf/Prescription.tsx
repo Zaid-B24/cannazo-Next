@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Page,
   Text,
@@ -9,7 +8,7 @@ import {
   Link as PdfLink,
 } from "@react-pdf/renderer";
 import { PatientFormData } from "@/lib/types";
-import { getProductByName } from "@/lib/products";
+import { getProductByName, Product } from "@/lib/products";
 // Register standard font
 Font.register({
   family: "Helvetica",
@@ -145,16 +144,43 @@ const styles = StyleSheet.create({
   },
 });
 
-// Helper to calculate age
-const calculateAge = (dob: string | Date): string | number => {
-  if (!dob) return "";
-  const diff = Date.now() - new Date(dob).getTime();
+const getNumericAge = (dob: string | Date): number => {
+  if (!dob) return 0;
+  const birthDate = new Date(dob);
+  if (isNaN(birthDate.getTime())) return 0;
+  const diff = Date.now() - birthDate.getTime();
   const ageDate = new Date(diff);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
+const getPersonalizedDose = (
+  product: Product | undefined,
+  age: number,
+  gender: string
+): string => {
+  if (!product || !product.dosage) return product?.dose || "As Dir.";
+
+  const isMale = gender.toLowerCase().startsWith("m");
+  const genderKey = isMale ? "male" : "female";
+
+  // 1. Children (< 18)
+  if (age < 18) {
+    return product.dosage.children !== "N/A"
+      ? product.dosage.children
+      : product.dose || "Consult Physician";
+  }
+
+  // 2. Seniors (> 50)
+  if (age > 50) {
+    return product.dosage.adults.above50[genderKey];
+  }
+
+  // 3. Adults (18-50)
+  return product.dosage.adults.age18to50[genderKey];
+};
+
 export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
-  const age = calculateAge(data.date_of_birth);
+  const age = getNumericAge(data.date_of_birth);
   const date = new Date().toLocaleDateString("en-IN");
 
   return (
@@ -234,22 +260,29 @@ export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
             <Text style={styles.col1}>Medicine Name</Text>
             <Text style={styles.col2}>Days</Text>
             <Text style={styles.col3}>Dose</Text>
-            <Text style={styles.col4}>Intake / Remark</Text>
+            <Text style={styles.col4}>Intake - Frequency - Remark</Text>
           </View>
 
           {data.selectedProducts && data.selectedProducts.length > 0 ? (
             data.selectedProducts.map((prodName: string, i: number) => {
               // LOOKUP DOSE HERE
               const product = getProductByName(prodName);
-              const dose = product?.dose || "As Dir.";
+              const personalizedDose = getPersonalizedDose(
+                product,
+                age,
+                data.gender
+              );
+              const frequency = product?.dose ? `${product.dose}` : "";
 
               return (
                 <View key={i} style={styles.tableRow}>
                   <Text style={styles.col1}>{prodName}</Text>
                   <Text style={styles.col2}>30</Text>
                   {/* DISPLAY DYNAMIC DOSE */}
-                  <Text style={styles.col3}>{dose}</Text>
-                  <Text style={styles.col4}>After Meal - Daily</Text>
+                  <Text style={styles.col3}>{frequency}</Text>
+                  <Text style={styles.col4}>
+                    After Meal - Daily {personalizedDose}
+                  </Text>
                 </View>
               );
             })
@@ -288,7 +321,14 @@ export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
           </Text>
         </View>
 
-        <View style={{ marginTop: 15, marginBottom: 15, paddingHorizontal: 5 }}>
+        <View
+          style={{
+            marginTop: 15,
+            marginBottom: 15,
+            paddingHorizontal: 5,
+            alignItems: "flex-start",
+          }}
+        >
           <Text style={{ fontSize: 9, color: "#444", marginBottom: 4 }}>
             Click the link below for expert guidance on medical cannabis,
             dosage, and diet recommendations:
@@ -297,7 +337,7 @@ export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
             src="https://cannazoindia.com/wp-content/uploads/2025/06/Prescription-pdf.pdf"
             style={{ fontSize: 9, color: "blue", textDecoration: "underline" }}
           >
-            https://cannazoindia.com/wp-content/uploads/2025/06/Prescription-pdf.pdf
+            Expert Guidance
           </PdfLink>
         </View>
 

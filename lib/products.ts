@@ -1,16 +1,16 @@
-// export type Dosage = {
-//   adults: {
-//     age18to50: {
-//       male: string;
-//       female: string;
-//     };
-//     above50: {
-//       male: string;
-//       female: string;
-//     };
-//   };
-//   children: string; 
-// };
+export type Dosage = {
+  adults: {
+    age18to50: {
+      male: string;
+      female: string;
+    };
+    above50: {
+      male: string;
+      female: string;
+    };
+  };
+  children: string; 
+};
 
 export type Product = {
   id: string;
@@ -20,6 +20,7 @@ export type Product = {
   image: string;
   tags: string[];
   dose?:string;
+  dosage?:Dosage;
 };
 
 
@@ -45,7 +46,20 @@ export const PRODUCTS: Product[] = [
       "Anti-inflammatory",
       "Anti-aging",
     ],
-    dose:"1-0-0"
+    dose:"1-0-0",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "2",
@@ -64,6 +78,19 @@ export const PRODUCTS: Product[] = [
       "Neuroprotective",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "3",
@@ -80,6 +107,19 @@ export const PRODUCTS: Product[] = [
       "Mood stabilize",
     ],
     dose:"1-0-0",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "4",
@@ -96,6 +136,19 @@ export const PRODUCTS: Product[] = [
       "Muscle stiffness",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "5",
@@ -111,6 +164,19 @@ export const PRODUCTS: Product[] = [
       "Improved circadian rhythm",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "6",
@@ -130,6 +196,19 @@ export const PRODUCTS: Product[] = [
       "Motor neuron disease",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "7",
@@ -148,6 +227,19 @@ export const PRODUCTS: Product[] = [
       "Chronic pain",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"5-15 drops",
+          female:"2-15 drops",
+        },
+        above50:{
+          male:"4-10 drops",
+          female:"2-10 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
 
   // --- EXTRACTS ---
@@ -170,6 +262,19 @@ export const PRODUCTS: Product[] = [
       "Chronic pain",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"2-8 drops",
+          female:"2-8 drops",
+        },
+        above50:{
+          male:"1-5 drops",
+          female:"1-5 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "9",
@@ -186,6 +291,19 @@ export const PRODUCTS: Product[] = [
       "Fibromyalgia",
     ],
     dose:"0-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"2-8 drops",
+          female:"2-8 drops",
+        },
+        above50:{
+          male:"1-5 drops",
+          female:"1-5 drops",
+        },
+      },
+      children:"N/A",
+    },
   },
   {
     id: "10",
@@ -219,6 +337,19 @@ export const PRODUCTS: Product[] = [
       "Sleep improvement",
     ],
     dose:"1-0-0",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"1-3 per day",
+          female:"1-3 per day",
+        },
+        above50:{
+          male:"1 per day",
+          female:"1 per day",
+        },
+      },
+      children:"N/A",
+    },
   },
 
   // --- TABLETS ---
@@ -237,6 +368,19 @@ export const PRODUCTS: Product[] = [
       "Ayurvedic Vata balancing",
     ],
     dose:"1-0-1",
+    dosage:{
+      adults:{
+        age18to50:{
+          male:"1-3 per day",
+          female:"1-3 per day",
+        },
+        above50:{
+          male:"1 per day",
+          female:"1 per day",
+        },
+      },
+      children:"N/A",
+    },
   },
 ];
 

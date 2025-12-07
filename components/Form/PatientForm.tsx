@@ -13,6 +13,7 @@ import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import { getProductNames } from "@/lib/products";
+import Image from "next/image";
 
 export default function PatientForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -124,28 +125,15 @@ export default function PatientForm() {
             throw new Error(errorResult.error || "Submission failed");
           }
 
-          // --- PDF DOWNLOAD LOGIC STARTS HERE ---
-
-          // 1. Convert response to a Blob (Binary file)
           const blob = await response.blob();
-
-          // 2. Create a temporary URL for the Blob
           const url = window.URL.createObjectURL(blob);
-
-          // 3. Create a hidden link and trigger the click
           const a = document.createElement("a");
           a.href = url;
-          a.download = `Prescription-${rawData.name}.pdf`; // Custom filename
+          a.download = `Prescription-${rawData.name}.pdf`;
           document.body.appendChild(a);
           a.click();
-
-          // 4. Cleanup
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
-
-          // --- PDF DOWNLOAD LOGIC ENDS HERE ---
-
-          console.log("PDF Downloaded successfully");
           setIsSubmitting(false);
           setShowSuccess(true);
         } catch (error) {
@@ -259,9 +247,16 @@ export default function PatientForm() {
         transition={{ duration: 0.6, delay: 0.2 }}
         className="w-full rounded-lg shadow-2xl border-0 bg-white/95 backdrop-blur-xl overflow-hidden mb-16"
       >
-        <div className="flex flex-col space-y-1.5 p-6 bg-linear-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-t-lg relative overflow-hidden">
+        <div className="relative flex flex-col space-y-1.5 p-6 bg-linear-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-t-lg overflow-hidden">
+          <Image
+            src="/Shark_Tank.webp"
+            alt="As Seen On Shark Tank India"
+            width={200}
+            height={300}
+            className="absolute top-4 left-4 w-auto h-12 md:h-20 object-contain z-20"
+          />
           <div className="relative z-10">
-            <h3 className="tracking-tight text-2xl font-bold text-center mb-2">
+            <h3 className="tracking-tight text-2xl font-bold text-center mb-2 mt-10 md:mt-0">
               Medical Cannabis Consultation Request
             </h3>
             <p className="text-center text-green-100 text-sm mb-4">

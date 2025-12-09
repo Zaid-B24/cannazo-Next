@@ -54,6 +54,7 @@ export default function StepTwo({ methods }: StepTwoProps) {
         name="symptoms"
         label="Symptoms & Related Conditions"
         placeholder="Describe your symptoms in detail..."
+        isOptional
       />
 
       <QuickAddSymptoms methods={methods} />
@@ -64,6 +65,7 @@ export default function StepTwo({ methods }: StepTwoProps) {
         name="medicalHistory"
         label="Relevant Medical History"
         placeholder="Previous treatments, medications, surgeries, allergies, etc."
+        isOptional
       />
     </motion.div>
   );

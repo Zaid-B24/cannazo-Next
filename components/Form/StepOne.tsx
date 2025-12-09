@@ -131,6 +131,7 @@ export default function StepOne({ methods }: StepOneProps) {
               name="weight"
               label="Weight (kg)"
               placeholder="Ex: 70"
+              isOptional
             />
           </div>
           <div className="flex-1">
@@ -140,6 +141,7 @@ export default function StepOne({ methods }: StepOneProps) {
               name="height"
               label="Height (cm)"
               placeholder="Ex: 175"
+              isOptional
             />
           </div>
         </div>
@@ -151,6 +153,7 @@ export default function StepOne({ methods }: StepOneProps) {
             name="address"
             label="Address"
             placeholder="Enter your complete address"
+            isOptional
           />
         </div>
 
@@ -161,13 +164,15 @@ export default function StepOne({ methods }: StepOneProps) {
             name="aadhaar_number"
             label="Aadhaar Number"
             placeholder="XXXX-XXXX-XXXX"
+            isOptional
           />
         </div>
       </div>
 
       <div className="mt-8 border-t pt-8 border-gray-100 mb-8">
         <label className="block text-sm font-medium text-gray-700 mb-3">
-          Upload Aadhaar Card Image
+          Upload Aadhaar Card Image{" "}
+          <span className="text-gray-500 text-xs ml-2 italic">(optional)</span>
         </label>
 
         {previewUrl ? (

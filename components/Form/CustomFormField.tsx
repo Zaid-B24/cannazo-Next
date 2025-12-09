@@ -177,6 +177,11 @@ const CustomFormField = (props: CustomProps) => {
             <FormLabel className="shad-input-label">
               {label}
               {props.required && <span className="text-red-500 ml-1">*</span>}
+              {props.isOptional && (
+                <span className="text-gray-500 text-xs ml-2 italic">
+                  (optional)
+                </span>
+              )}
             </FormLabel>
           )}
           <RenderInput field={field} props={props} />

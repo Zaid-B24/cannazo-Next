@@ -28,6 +28,7 @@ export interface CustomProps {
   showTimeSelect?: boolean;
   required?: boolean;
   children?: React.ReactNode;
+  isOptional?: boolean;
   renderSkeleton?: (field: ControllerRenderProps<FieldValues, string>) => React.ReactNode;
   fieldType: FormFieldType;
 }

@@ -165,7 +165,10 @@ export default function PatientForm() {
         Submission Successful!
       </h2>
       <p className="text-gray-500 max-w-md">
-        Your medical consultation request has been successfully submitted.
+        Your e-prescription has been delivered to your email.
+      </p>
+      <p className="text-gray-500 max-w-md">
+        Welcome to the cannabis-infused therapeutic treatment of Ayurveda.
       </p>
 
       <div className="flex flex-col items-center mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100">

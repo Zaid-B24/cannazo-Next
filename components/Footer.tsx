@@ -37,16 +37,19 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 },
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
   },
 };
 
 const cardVariants: Variants = {
-  hidden: { y: 50, opacity: 0 },
+  hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: "spring", stiffness: 100 },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
@@ -68,7 +71,7 @@ export default function Footer() {
           <motion.div
             key={feature.id}
             variants={cardVariants}
-            className="rounded-lg text-card-foreground shadow-sm hover:shadow-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm border-2 border-gray-100 h-full"
+            className="rounded-lg text-card-foreground shadow-sm hover:shadow-2xl transition-all duration-300 bg-white/90  border-2 border-gray-100 h-full"
           >
             <div className="p-8 text-center">
               <div

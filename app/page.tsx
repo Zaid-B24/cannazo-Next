@@ -1,12 +1,12 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import BackgroundElements from "@/components/BackgroundElements";
+//import BackgroundElements from "@/components/BackgroundElements";
 import PatientForm from "@/components/Form/PatientForm";
 
 function App() {
   return (
     <div className="min-h-screen w-full bg-bg-mint relative overflow-x-hidden">
-      <BackgroundElements />
+      {/* <BackgroundElements /> */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 relative z-10">
         <Header />
         <main className="mb-10">

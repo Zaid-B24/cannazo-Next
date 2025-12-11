@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Font,
   Link as PdfLink,
+  Image as PdfImage,
 } from "@react-pdf/renderer";
 import { PatientFormData } from "@/lib/types";
 import { getProductByName, Product } from "@/lib/products";
@@ -136,11 +137,18 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     paddingTop: 10,
   },
-  signatureImage: {
-    width: 100,
-    height: 50,
+  //Auth/Doctors stamp
+  authSection: {
+    marginTop: 20,
+    flexDirection: "column",
+    alignItems: "center",
     alignSelf: "flex-end",
+  },
+  combinedAuthImage: {
+    width: 150,
+    height: 80,
     marginBottom: 5,
+    objectFit: "contain" as const,
   },
 });
 
@@ -179,7 +187,12 @@ const getPersonalizedDose = (
   return product.dosage.adults.age18to50[genderKey];
 };
 
-export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
+interface PrescriptionPDFProps {
+  data: PatientFormData;
+  authImage: Buffer | null;
+}
+
+export const PrescriptionPDF = ({ data, authImage }: PrescriptionPDFProps) => {
   const age = getNumericAge(data.date_of_birth);
   const date = new Date().toLocaleDateString("en-IN");
 
@@ -342,11 +355,10 @@ export const PrescriptionPDF = ({ data }: { data: PatientFormData }) => {
         </View>
 
         {/* FOOTER */}
-        <View
-          style={{ marginTop: 20, alignItems: "flex-end", marginRight: 30 }}
-        >
-          {/* Replace this with your actual signature path if available */}
-          {/* <Image src={`${process.cwd()}/public/signature.png`} style={styles.signatureImage} /> */}
+        <View style={styles.authSection}>
+          {authImage && (
+            <PdfImage src={authImage} style={styles.combinedAuthImage} />
+          )}
           <Text style={{ fontWeight: "bold" }}>Dr. Abdul Shafiz Shaikh</Text>
         </View>
 

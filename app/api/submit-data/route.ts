@@ -1,13 +1,12 @@
 import { generatePrescriptionStream } from "@/lib/pdf-service";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import db from "@/db";
+import { streamToBuffer } from "@/lib/utils";
+import { sendPrescriptionEmail } from "@/lib/emails";
 export async function POST(req: Request) {
   try {
-    // 1. Parse the incoming JSON
-    const data = await req.json();
 
-    console.log("------------------------------------------------");
-    console.log("🚀 Processing Prescription for:", data.name);
+    const data = await req.json();
 
     const savedRecord = await db.patientData.create({
       data: {
@@ -27,25 +26,28 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("✅ Database Record Created ID:", savedRecord.id);
-    console.log("------------------------------------------------");
-    const stream = await generatePrescriptionStream(data);
-    
+    const emailPromise = async () => {
+        try {
+            const stream = await generatePrescriptionStream(data);
+            const pdfBuffer = await streamToBuffer(stream);
+            await sendPrescriptionEmail(data.email, data.name, pdfBuffer);
+            
+        } catch (err) {
+            console.error("Background Email Failed:", err);
+        }
+    };
 
-    // 2. Return the stream as a response
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return new NextResponse(stream as any, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="Prescription-${data.name.replace(/\s+/g, '_')}.pdf"`,
-      },
-    });
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
+    after(emailPromise);
+   
     return NextResponse.json(
-      { success: false, error: "Invalid JSON" },
-      { status: 400 }
+      { success: true, message: "Request received. Processing in background." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("API Error:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal Server Error" },
+      { status: 500 }
     );
   }
 }

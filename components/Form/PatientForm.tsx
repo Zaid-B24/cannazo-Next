@@ -108,7 +108,6 @@ export default function PatientForm() {
         setIsSubmitting(true);
         try {
           const rawData = getValues();
-          console.log("Sending data to backend...");
           const finalPayload = {
             ...rawData,
             selectedProducts: getProductNames(rawData.selectedProducts),
@@ -121,30 +120,37 @@ export default function PatientForm() {
           });
 
           if (!response.ok) {
-            const errorResult = await response.json();
-            throw new Error(errorResult.error || "Submission failed");
+            let errorMessage = "Submission failed";
+            try {
+              const errorResult = await response.json();
+              errorMessage = errorResult.error || errorMessage;
+            } catch (e) {}
+            throw new Error(errorMessage);
           }
 
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `Prescription-${rawData.name}.pdf`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
+          toast.success(`Request received for ${rawData.name}!`, {
+            description:
+              "We are processing your prescription. Check your email shortly.",
+            duration: 5000,
+            classNames: {
+              toast: "bg-white",
+              title: "text-zinc-950 font-bold text-base", // Darkest black
+              description: "text-zinc-900 font-semibold text-sm opacity-100", // Dark black, fully opaque
+            },
+          });
           setIsSubmitting(false);
           setShowSuccess(true);
         } catch (error) {
-          console.error("❌ Submission Error:", error);
-          toast.error("Something went wrong.");
+          console.error("Submission Error:", error);
+          toast.error("Submission Failed", {
+            description:
+              error instanceof Error ? error.message : "Please try again.",
+          });
         } finally {
           setIsSubmitting(false);
         }
       }
     } else {
-      console.error("❌ Validation Failed!");
       console.error("Current Form Errors:", errors);
     }
   }, [currentStep, trigger, getValues, errors]);
@@ -159,7 +165,7 @@ export default function PatientForm() {
         Submission Successful!
       </h2>
       <p className="text-gray-500 max-w-md">
-        Your medical consultation request has been generated securely.
+        Your medical consultation request has been successfully submitted.
       </p>
 
       <div className="flex flex-col items-center mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100">

@@ -382,6 +382,39 @@ export const PRODUCTS: Product[] = [
       children:"N/A",
     },
   },
+  {
+  id: "13",
+  name: "Uplift THC Gummies",
+  description: "Uplift Gummies blend the power of full-spectrum Vijaya (medical cannabis) leaf extract with the bright, refreshing taste of Tropical Raw Mango.",
+  category: "Gummies",
+  image: "/13.png",
+  tags: [
+    "De-addiction",
+    "De-alcoholism",
+    "Anxiety",
+    "relief (THC-friendly users)",
+    "Craving reduction",
+    "Emotional burnout",
+    "Unwind",
+    "Relaxation",
+    "Chronic pain",
+  ],
+  dose: "1-0-1",
+  dosage: {
+    adults: {
+      age18to50: {
+        male: "1-3 per day",
+        female: "1-3 per day",
+      },
+      above50: {
+        male: "1 per day",
+        female: "1 per day",
+      },
+    },
+    children: "N/A",
+  },
+},
+
 ];
 
 export const SYMPTOM_TO_PRODUCT_ID: Record<string, string[]> = {};
